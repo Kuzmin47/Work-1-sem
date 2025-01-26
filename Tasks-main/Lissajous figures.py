@@ -2,19 +2,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider, Button, CheckButtons, RadioButtons
 
-# --- Lissajous Curve Function ---
 def lissajous(t, A, B, a, b, delta):
     x = A * np.sin(a * t + delta)
     y = B * np.cos(b * t)
     return x, y
 
-# --- Tangent Calculation ---
 def tangent(t_val, A, B, a, b, delta):
     dx_dt = A * a * np.cos(a * t_val + delta)
     dy_dt = -B * b * np.sin(b * t_val)
     return dx_dt, dy_dt
 
-# --- Initialize Plot ---
 fig, ax = plt.subplots()
 plt.subplots_adjust(left=0.25, bottom=0.3)
 
@@ -30,12 +27,10 @@ ax.set_xlabel('x')
 ax.set_ylabel('y')
 ax.set_title('Lissajous Curve')
 
-# --- Sliders ---
 ax_slider_t = plt.axes([0.25, 0.20, 0.65, 0.03])
 slider_t = Slider(ax_slider_t, 't', 1.6, 4.74, valinit=0)
 
-# --- Update function ---
-show_tangent = False  # Initially, don't show tangent
+show_tangent = False  
 
 def update(val):
     global show_tangent
@@ -45,7 +40,7 @@ def update(val):
     line.set_data(x, y)
 
 
-    x_point, y_point = lissajous(np.array([t_val]), A, B, a, b, delta)  # Get coordinates
+    x_point, y_point = lissajous(np.array([t_val]), A, B, a, b, delta) 
     point.set_data(x_point, y_point)
 
     if show_tangent:
@@ -63,22 +58,17 @@ def update(val):
 
     fig.canvas.draw_idle()
 
-
-# --- Attach callbacks ---
 slider_t.on_changed(update)
 
-# --- Checkbox (tangent) ---
 rax = plt.axes([0.05, 0.7, 0.15, 0.15])
 check = CheckButtons(rax, ['Tangent'], [show_tangent])
 
 def toggle_tangent(label):
     global show_tangent
     show_tangent = not show_tangent
-    update(None)  # Force plot update
+    update(None)  
 check.on_clicked(toggle_tangent)
 
-
-# --- Reset Button ---
 resetax = plt.axes([0.05, 0.025, 0.1, 0.04])
 button = Button(resetax, 'Reset', hovercolor='0.975')
 
@@ -87,8 +77,6 @@ def reset(event):
     update(None)
 button.on_clicked(reset)
 
-
-# --- Radio button (styles) ---
 rax = plt.axes([0.3, 0.05, 0.6, 0.15])
 radio = RadioButtons(rax, ('Синий - Сплошная', 'Красный - Пунктирная', 'Зелёный - Точечная'), active=0)
 
